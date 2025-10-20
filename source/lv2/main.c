@@ -212,10 +212,11 @@ int main(){
 #endif
 
 	printf(" system SDRAM config is...\n");
+	void* membase = (void*)0x8000020000000000ull;    
     for (i = 0; i < (sizeof(REGISTERS_TO_DUMP) / sizeof(uint32_t)); i++)
     {
 		uint32_t reg = REGISTERS_TO_DUMP[i];
-		printf(" - 0x%08x = %08x\n", reg, *((uint32_t*)reg));
+		printf(" - 0x%08x = %08x\n", reg, *((uint32_t*)(membase + reg)));
     }
 
 	/* Stop logging and save it to first USB Device found that is writeable */

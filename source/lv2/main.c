@@ -83,6 +83,24 @@ void synchronize_timebases()
 	std((void*)0x200611a0,0x1ff); // restart timebase
 }
 	
+#define M_GpuReg(reg) (0xE4000000 | (reg << 2))
+
+static const uint32_t REGISTERS_TO_DUMP[] =
+{
+    // memory controller registers - just SDRAM delay timings for now,
+    // more can be added in the future.
+    // these are listed in the order that hwinit typically initializes them.
+	M_GpuReg(0x0827), // MC0_RD_STR_DLY_0
+	M_GpuReg(0x0828), // MC0_RD_STR_DLY_1
+	M_GpuReg(0x0867), // MC1_RD_STR_DLY_0
+	M_GpuReg(0x0868), // MC1_RD_STR_DLY_1
+
+	M_GpuReg(0x0820), // MC0_WR_STR_DLL_0
+	M_GpuReg(0x0821), // MC0_WR_STR_DLL_1
+	M_GpuReg(0x0860), // MC1_WR_STR_DLL_0
+	M_GpuReg(0x0861), // MC1_WR_STR_DLL_1
+};
+
 int main(){
 	LogInit();
 	int i;
@@ -192,6 +210,13 @@ int main(){
 	print_cpu_dvd_keys();
 	network_print_config();
 #endif
+
+	printf(" system SDRAM config is...\n");
+    for (i = 0; i < (sizeof(REGISTERS_TO_DUMP) / sizeof(uint32_t)); i++)
+    {
+		printf(" - 0x%08x = %08x\n", REGISTERS_TO_DUMP[i], read32n(REGISTERS_TO_DUMP[i]));
+    }
+
 	/* Stop logging and save it to first USB Device found that is writeable */
 	LogDeInit();
 	//extern char device_list[STD_MAX][10];

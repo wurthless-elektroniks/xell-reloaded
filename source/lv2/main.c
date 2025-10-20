@@ -211,6 +211,17 @@ int main(){
 	network_print_config();
 #endif
 
+	// 220c: store_word_0_100 2, MC0_CNTL
+	// 2210: store_word_0_100 0x00001000, MC0_CNTL
+	// 2218: store_word_0_100 0x00000605, MC0_CNTL
+	*((volatile uint32_t*) M_GpuReg(0x800)) = 0x02000000;
+	*((volatile uint32_t*) M_GpuReg(0x840)) = 0x02000000;
+	*((volatile uint32_t*) M_GpuReg(0x800)) = 0x00100000;
+	*((volatile uint32_t*) M_GpuReg(0x840)) = 0x00100000;
+	*((volatile uint32_t*) M_GpuReg(0x800)) = 0x05060000;
+	*((volatile uint32_t*) M_GpuReg(0x840)) = 0x05060000;
+
+
 	printf(" system SDRAM config is...\n");
 	void* membase = (void*)0x8000020000000000ull;    
     for (i = 0; i < (sizeof(REGISTERS_TO_DUMP) / sizeof(uint32_t)); i++)
@@ -218,6 +229,9 @@ int main(){
 		uint32_t reg = REGISTERS_TO_DUMP[i];
 		printf(" - 0x%08x = %08x\n", reg, *((volatile uint32_t*)(membase + reg)));
     }
+
+	*((volatile uint32_t*) M_GpuReg(0x800)) = 0;
+	*((volatile uint32_t*) M_GpuReg(0x840)) = 0;
 
 	/* Stop logging and save it to first USB Device found that is writeable */
 	LogDeInit();

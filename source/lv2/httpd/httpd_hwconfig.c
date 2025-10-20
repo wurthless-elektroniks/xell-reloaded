@@ -64,7 +64,8 @@ int response_hwconfig_process_request(struct http_state *http, const char *metho
     for (int i = 0; i < (sizeof(REGISTERS_TO_DUMP) / sizeof(uint32_t)); i++)
     {
         data_as_ints[(i*2)]   = REGISTERS_TO_DUMP[i];
-        data_as_ints[(i*2)+1] =  *( (uint32_t*)(membase + REGISTERS_TO_DUMP[i]) );
+		data_as_ints[(i*2)+1] = 0;
+        // data_as_ints[(i*2)+1] =  *( (uint32_t*)(membase + REGISTERS_TO_DUMP[i]) );
     }
 
 	priv->hdr_state = 0;

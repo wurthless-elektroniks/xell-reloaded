@@ -44,6 +44,8 @@ static const uint32_t REGISTERS_TO_DUMP[] =
 	M_GpuReg(0x0861), // MC1_WR_STR_DLL_1
 };
 
+#define REGDUMP_SIZE (sizeof(REGISTERS_TO_DUMP)*2)
+
 int response_hwconfig_process_request(struct http_state *http, const char *method, const char *url)
 {
 	if (strcmp(method, "GET")) return 0;
@@ -55,7 +57,7 @@ int response_hwconfig_process_request(struct http_state *http, const char *metho
 	
     struct response_mem_priv_s *priv = http->response_priv;
 
-    priv->data = mem_malloc(sizeof(REGISTERS_TO_DUMP) * 2);
+    priv->data = mem_malloc(REGDUMP_SIZE);
 
     void* membase = 0x8000020000000000ull;    
     uint32_t* data_as_ints = (uint32_t*)priv->data;
@@ -86,7 +88,7 @@ int response_hwconfig_do_header(struct http_state *http) {
 
 	case 1:
 		t = "Content-Length";
-        sprintf(buf, "%d", sizeof(REGISTERS_TO_DUMP) * 2); 
+        sprintf(buf, "%d", REGDUMP_SIZE); 
 		o = buf;
 		break;
         
@@ -130,7 +132,7 @@ int response_hwconfig_do_data(struct http_state *http)
 
 	while (av)
 	{
-		int maxread = sizeof(REGISTERS_TO_DUMP) * 2;
+		int maxread = REGDUMP_SIZE;
 		if (maxread > av)
 			maxread = av;
 

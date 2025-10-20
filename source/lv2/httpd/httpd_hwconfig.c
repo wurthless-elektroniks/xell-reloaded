@@ -59,7 +59,7 @@ int response_hwconfig_process_request(struct http_state *http, const char *metho
 
     priv->data = mem_malloc(REGDUMP_SIZE);
 
-    void* membase = 0x8000020000000000ull;    
+    void* membase = (void*)0x8000020000000000ull;    
     uint32_t* data_as_ints = (uint32_t*)priv->data;
     for (int i = 0; i < (sizeof(REGISTERS_TO_DUMP) / sizeof(uint32_t)); i++)
     {
@@ -153,7 +153,7 @@ int response_hwconfig_do_data(struct http_state *http)
 
 void response_hwconfig_finish(struct http_state *http)
 {
-	struct response_fuse_priv_s *priv = http->response_priv;
+	struct response_mem_priv_s *priv = http->response_priv;
 	mem_free(priv->data);
 	mem_free(priv);
 }

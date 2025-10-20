@@ -18,6 +18,7 @@
 #include "httpd/httpd_flash.h"
 #include "httpd/httpd_fuse.h"
 #include "httpd_keyvault.h"
+#include "httpd_hwconfig.h"
 
 #include "httpd_index.h"
 
@@ -862,6 +863,7 @@ struct httpd_handler http_handler[]=
 		{response_flash_process_request,  0, 0, response_flash_do_header, response_flash_do_data, 0, response_flash_finish},
 		{response_keyvault_process_request, 0, 0, response_keyvault_do_header, response_keyvault_do_data, 0, response_keyvault_finish},
 //		{response_setdvdkey_process_request, 0, 0, response_setdvdkey_do_header, response_setdvdkey_do_data, response_setdvdkey_finish},
+		{response_hwconfig_process_request, 0, 0, response_hwconfig_do_header, response_hwconfig_do_data, response_hwconfig_finish },
 		{response_log_process_request, 0, 0, 0, response_static_do_data, 0, response_static_finish},
 		{response_reboot_process_request, 0, 0, 0, response_static_do_data, 0, response_static_finish},
 		{response_shutdown_process_request, 0, 0, 0, response_static_do_data, 0, response_static_finish},

@@ -218,7 +218,7 @@ int main(){
 				rtc_response[5]
 			);
 
-			break;
+			delay(1);
 		}
 	}
 

@@ -192,6 +192,37 @@ int main(){
 	print_cpu_dvd_keys();
 	network_print_config();
 #endif
+
+	// RTC test
+	uint8_t rtc_request[16] = {
+		4, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+	};
+	uint8_t rtc_response[16];
+
+	printf("waiting on RTC response...\n");
+
+	while(1) {
+		xenon_smc_send_message(rtc_request);
+		while(xenon_smc_receive_message(rtc_response) == -1);
+
+		if (rtc_response[0] == 4) {
+			printf("got RTC response from smc...\n");
+			printf("rtc = %02x %02x %02x %02x %02x\n",
+				rtc_response[1],
+				rtc_response[2],
+				rtc_response[3],
+				rtc_response[4],
+				rtc_response[5]
+			);
+
+			break;
+		}
+	}
+
+
 	/* Stop logging and save it to first USB Device found that is writeable */
 	LogDeInit();
 	//extern char device_list[STD_MAX][10];

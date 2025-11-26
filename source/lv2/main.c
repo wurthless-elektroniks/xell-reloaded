@@ -211,14 +211,14 @@ int main(){
 		if (rtc_response[0] == 4) {
 			printf("got RTC response from smc...\n");
 
-			uint64_t time_in_ms =
-				rtc_response[1] |
-				(rtc_response[2] << 8) |
-				(rtc_response[3] << 16) |
-				(rtc_response[4] << 24) |
-				(rtc_response[5] << 32);
+			int time_in_ms =
+				rtc_response[1] +
+				(rtc_response[2] << 8) +
+				(rtc_response[3] << 16) +
+				(rtc_response[4] << 24);
+				// (rtc_response[5] << 32);
 				
-			printf("time in ms? = %ld\n", time_in_ms);
+			printf("time in ms? = %d\n", time_in_ms);
 
 			delay(1);
 		}
